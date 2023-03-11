@@ -7,20 +7,20 @@
 #include "shellcommands.h"
 
 
-int main(int argc, char **argv) {
-    lsh_loop();
-    
-    return EXIT_SUCCESS;
-}
-
 //run the shell process
 void lsh_loop(void) {
       char *line;
       char **args;
       int status;
-
+      FILE *ufp;
+      char username[2047];
+      //i fialed here lol, gotta get working on actually making this usuable on other people's computers
+  /*    char *homedir = getenv("HOME");
+      char pathtofile[2047] = strcat(homedir, ".pssh_rc"); */
+      ufp = fopen("/home/maan/.pssh_rc", "r+");
+      fscanf(ufp, "user=%s", username);
       do {
-        printf("> ");
+        printf("%s> ", username);
         line = lsh_read_line();
         args = lsh_split_line(line);
         status = lsh_execute(args);
@@ -29,4 +29,10 @@ void lsh_loop(void) {
         free(args);
       } while (status);
 
+}
+
+int main(int argc, char **argv) {
+    lsh_loop();
+    
+    return EXIT_SUCCESS;
 }
