@@ -13,12 +13,15 @@ void lsh_loop(void) {
       char **args;
       int status;
       FILE *ufp;
-      char username[2047];
+      char username[2047] = "user";
       //i fialed here lol, gotta get working on actually making this usuable on other people's computers
   /*    char *homedir = getenv("HOME");
       char pathtofile[2047] = strcat(homedir, ".pssh_rc"); */
-      ufp = fopen("/home/maan/.pssh_rc", "r+");
-      fscanf(ufp, "user=%s", username);
+      if (fopen("/home/maan/.pssh_rc", "r+") != NULL) {
+         ufp = fopen("/home/maan/.pssh_rc", "r+"); 
+         fscanf(ufp, "user=%s", username);
+      }
+
       do {
         printf("%s> ", username);
         line = lsh_read_line();
