@@ -18,7 +18,6 @@ static volatile sig_atomic_t jump_active = 0;
 char *lsh_read_line(void) {
   char *line = NULL;
   ssize_t bufsize = 0; // have getline allocate a buffer for us
-
   if (getline(&line, &bufsize, stdin) == -1){
     if (feof(stdin)) {
       exit(EXIT_SUCCESS);  // We recieved an EOF
@@ -27,7 +26,6 @@ char *lsh_read_line(void) {
       exit(EXIT_FAILURE);
     }
   }
-
   return line;
 }
 //split each line into tokens, put in into an array called tokens to feed into lsh_execute 
@@ -36,7 +34,13 @@ char **lsh_split_line(char *line)
   int bufsize = LSH_TOK_BUFSIZE, position = 0;
   char **tokens = malloc(bufsize * sizeof(char*));
   char *token;
-
+  //opne up a file, and then write the line inputted by the user to it
+  FILE *psshHist = fopen("/home/maan/.pssh_history", "r+");
+  if (psshHist != NULL) {
+      fseek(psshHist, 0, SEEK_END);
+      fprintf(psshHist, "%s", line);
+      fclose(psshHist);
+  } 
   if (!tokens) {
     fprintf(stderr, "psh: allocation error\n");
     exit(EXIT_FAILURE);
