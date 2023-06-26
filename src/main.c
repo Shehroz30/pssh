@@ -5,6 +5,13 @@
 #include <sys/wait.h>
 #include "shellfunctions.h"
 #include "shellcommands.h"
+void write_toFile(char* line) {
+    FILE* histFile = fopen(".pssh_history", "a");
+
+    fprintf(histFile, line);
+
+    fclose(histFile);
+}
 
 
 //run the shell process
@@ -12,7 +19,7 @@ void lsh_loop(void) {
       char *line;
       char **args;
       int status;
-      FILE *ufp;
+      FILE *ufp, *histFile;
       char username[2047] = "user";
       //i fialed here lol, gotta get working on actually making this usuable on other people's computers
   /*    char *homedir = getenv("HOME");
@@ -25,6 +32,9 @@ void lsh_loop(void) {
       do {
         printf("%s> ", username);
         line = lsh_read_line();
+        histFile = fopen(".pssh_history", "a");
+        fprintf(histFile, line);
+        fclose(histFile);
         args = lsh_split_line(line);
         status = lsh_execute(args);
 

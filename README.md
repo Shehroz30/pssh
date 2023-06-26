@@ -6,5 +6,4 @@ and this <a href="https://brennan.io/2015/01/16/write-a-shell-in-c/" target="_bl
 
 #to do list
 - fix user things (right now it only works on my pc)
-- add file history
-
+added file history
